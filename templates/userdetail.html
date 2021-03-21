@@ -1,0 +1,42 @@
+{% extends 'base.html' %} {% block title %}Secret{% endblock %} {% block content
+%}
+
+<h1>{{user.username}}</h1>
+<div>Email: {{user.email}}</div>
+<div>First Name: {{user.first_name}}</div>
+<div>Last Name: {{user.last_name}}</div>
+<hr />
+<h3>Feedback</h3>
+<div>
+  {% for feedback in feedbacks %}
+  <div class="card my-4">
+    <div class="card-body">
+      <h5 class="card-title text-info">
+        {{feedback.username}} {% if session['username'] == feedback.username %}
+        <form style="display: inline" action="/feedback/{{feedback.id}}/delete" method="POST">
+          <button class="btn btn-sm btn-danger">
+            <i class="fas fa-trash"></i>
+          </form>
+        <form style="display: inline" action="/feedback/{{feedback.id}}/update" method="POST">
+          <button class="btn btn-sm btn-warning">
+            <i class="far fa-edit"></i>
+          </button>
+        </form>
+        {% endif %}
+      </h5>
+      <h6 class="card-subtitle mb-2 text-muted">{{feedback.title}}</h6>
+      <p class="card-text">{{feedback.content}}</p>
+    </div>
+  </div>
+
+  {% endfor %}
+</div>
+
+<form action="/users/{{user.username}}/feedback/add" method="GET">
+  <button>Add Feedback</button>
+</form>
+<form action="/users/{{user.username}}/delete" method="POST">
+  <button>Delete User</button>
+</form>
+
+{% endblock %}
